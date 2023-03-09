@@ -1,6 +1,10 @@
 
 package igu;
 
+import Service.SDocumento;
+import javax.swing.JCheckBox;
+import javax.swing.JTextField;
+
 public class InterfaceApp extends javax.swing.JFrame {
 
     /**
@@ -55,36 +59,32 @@ public class InterfaceApp extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel1.setText("CUIG");
 
-        Cuig.setText("cuig");
+        Cuig.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CuigActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel2.setText("Establecimiento");
 
-        NombreEst.setText("nombre establecimiento");
         NombreEst.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NombreEstActionPerformed(evt);
             }
         });
 
-        Ayn.setText("ayn");
-
-        Renspa.setText("renspa");
         Renspa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RenspaActionPerformed(evt);
             }
         });
 
-        Cuit.setText("cuit");
-
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel3.setText("RENSPA");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel4.setText("CUIT");
-
-        NroHoja.setText("NroHoja");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel5.setText("Hoja");
@@ -98,7 +98,6 @@ public class InterfaceApp extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel8.setText("Hasta");
 
-        DesdeCaravana.setText("desdeCaravana");
         DesdeCaravana.setToolTipText("");
         DesdeCaravana.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,7 +105,6 @@ public class InterfaceApp extends javax.swing.JFrame {
             }
         });
 
-        HastaCaravana.setText("hastaCaravana");
         HastaCaravana.setToolTipText("");
         HastaCaravana.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,22 +115,22 @@ public class InterfaceApp extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel9.setText("Cantidad");
 
-        Cantidad.setText("cantidad");
-
         BotonCalcular.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         BotonCalcular.setText("Calcular");
+        BotonCalcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonCalcularActionPerformed(evt);
+            }
+        });
 
         Imprimir.setText("Imprimir");
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel10.setText("Impresor");
 
-        Impresor.setText("impresor");
-
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel11.setText("Mes/Año");
 
-        MesAno.setText("mesano");
         MesAno.setName("MesAno"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -277,9 +275,29 @@ public class InterfaceApp extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_HastaCaravanaActionPerformed
 
+    private void CuigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CuigActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CuigActionPerformed
+
+    private void BotonCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonCalcularActionPerformed
+        String cuig = Cuig.getText();
+        String nameEst =NombreEst.getText();
+        int renspa = Integer.parseInt(Renspa.getText());
+        int cuit = Integer.parseInt(Cuit.getText());
+        int hoja = Integer.parseInt(NroHoja.getText());
+        String desdeCaravana = DesdeCaravana.getText();
+        int cantidad = Integer.parseInt(Cantidad.getText());
+        
+        
+    }//GEN-LAST:event_BotonCalcularActionPerformed
+
     /**
      * @param args the command line arguments
      */
+
+    
+
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

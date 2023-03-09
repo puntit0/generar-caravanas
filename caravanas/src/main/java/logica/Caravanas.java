@@ -15,4 +15,5 @@ public class Caravanas {
         pantalla.setVisible(true);
         pantalla.setLocationRelativeTo(null);
     }
+    
 }

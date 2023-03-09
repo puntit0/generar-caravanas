@@ -201,9 +201,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="Cuig">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="cuig"/>
-          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CuigActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
@@ -214,30 +214,18 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="NombreEst">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="nombre establecimiento"/>
-          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NombreEstActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="Ayn">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="ayn"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="Renspa">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="renspa"/>
-          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RenspaActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="Cuit">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="cuit"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
@@ -256,9 +244,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="NroHoja">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="NroHoja"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
@@ -294,7 +279,6 @@
         </Component>
         <Component class="javax.swing.JTextField" name="DesdeCaravana">
           <Properties>
-            <Property name="text" type="java.lang.String" value="desdeCaravana"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
           <Events>
@@ -303,7 +287,6 @@
         </Component>
         <Component class="javax.swing.JTextField" name="HastaCaravana">
           <Properties>
-            <Property name="text" type="java.lang.String" value="hastaCaravana"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
           <Events>
@@ -319,9 +302,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="Cantidad">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="cantidad"/>
-          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="BotonCalcular">
           <Properties>
@@ -330,6 +313,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Calcular"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BotonCalcularActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="Imprimir">
           <Properties>
@@ -345,9 +331,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="Impresor">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="impresor"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel11">
           <Properties>
@@ -359,7 +342,6 @@
         </Component>
         <Component class="javax.swing.JTextField" name="MesAno">
           <Properties>
-            <Property name="text" type="java.lang.String" value="mesano"/>
             <Property name="name" type="java.lang.String" value="MesAno" noResource="true"/>
           </Properties>
         </Component>
