@@ -1,9 +1,8 @@
 
 package igu;
 
-import Service.SDocumento;
-import javax.swing.JCheckBox;
-import javax.swing.JTextField;
+import static java.time.Clock.system;
+import logica.Caravanas;
 
 public class InterfaceApp extends javax.swing.JFrame {
 
@@ -48,6 +47,7 @@ public class InterfaceApp extends javax.swing.JFrame {
         Impresor = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         MesAno = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Caravanas");
@@ -133,6 +133,13 @@ public class InterfaceApp extends javax.swing.JFrame {
 
         MesAno.setName("MesAno"); // NOI18N
 
+        jButton1.setText("Salir");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -185,15 +192,13 @@ public class InterfaceApp extends javax.swing.JFrame {
                             .addComponent(jLabel11))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(Cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(BotonCalcular)
-                                    .addComponent(Imprimir)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(MesAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                            .addComponent(Cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(MesAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(BotonCalcular)
+                            .addComponent(Imprimir))))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -241,7 +246,8 @@ public class InterfaceApp extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addComponent(Impresor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11)
-                    .addComponent(MesAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(MesAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -280,16 +286,15 @@ public class InterfaceApp extends javax.swing.JFrame {
     }//GEN-LAST:event_CuigActionPerformed
 
     private void BotonCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonCalcularActionPerformed
-        String cuig = Cuig.getText();
-        String nameEst =NombreEst.getText();
-        int renspa = Integer.parseInt(Renspa.getText());
-        int cuit = Integer.parseInt(Cuit.getText());
-        int hoja = Integer.parseInt(NroHoja.getText());
-        String desdeCaravana = DesdeCaravana.getText();
-        int cantidad = Integer.parseInt(Cantidad.getText());
-        
-        
+       
+        Caravanas caravanas = new Caravanas();
+        caravanas.listacaravanas();
+        caravanas.getNumeros();
     }//GEN-LAST:event_BotonCalcularActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -314,6 +319,7 @@ public class InterfaceApp extends javax.swing.JFrame {
     private javax.swing.JTextField NombreEst;
     private javax.swing.JTextField NroHoja;
     private javax.swing.JTextField Renspa;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
