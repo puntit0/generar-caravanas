@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package generar.planillas;
+package generar_planillas;
 
 import entity.Caravana;
 import static java.lang.System.out;
@@ -133,10 +133,85 @@ public class GenerarPlanillas {
     }
 
     public void prueba() {
-        String inicaravanas = "AB250";
-        int cantidad = 25;
-        cargarCaravanas(inicaravanas, cantidad);
-        generar();
+        String inicaravanas = "RT00";
+        int cantidad = 1000;
+        //cargarCaravanas(inicaravanas, cantidad);
+        //generar();
+        generarCa(inicaravanas,cantidad);
     }
 
+    public void generarCa(String desde, int cant) {
+    ArrayList<String> secuencias = new ArrayList<>();
+    secuencias.add(desde);
+
+    for (int i = 1; i < cant; i++) {
+        // Obtener la última secuencia generada
+        String lastSequence = secuencias.get(secuencias.size() - 1);
+
+        // Convertir la última secuencia en una matriz de caracteres
+        char[] chars = lastSequence.toCharArray();
+
+        // Incrementar el último dígito numérico
+        int lastIndex = chars.length - 1;
+        while (lastIndex >= 0 && Character.isDigit(chars[lastIndex])) {
+            if (chars[lastIndex] == '9') {
+                chars[lastIndex] = '0';
+                lastIndex--;
+            } else {
+                chars[lastIndex]++;
+                break;
+            }
+        }
+
+        // Verificar si se necesita agregar una nueva letra a la izquierda
+        if (lastIndex >= 0 && Character.isLetter(chars[lastIndex])) {
+            char currentLetter = chars[lastIndex];
+            if (currentLetter == 'Z') {
+                // Agregar una nueva letra a la izquierda
+                int firstIndex = lastIndex - 1;
+                if (firstIndex >= 0 && Character.isLetter(chars[firstIndex])) {
+                    char firstLetter = chars[firstIndex];
+                    if (firstLetter == 'Z') {
+                        // Si la primera letra es 'Z', reiniciar toda la secuencia a "AA00"
+                        for (int j = 0; j < chars.length; j++) {
+                            chars[j] = (j < 2) ? 'A' : '0';
+                        }
+                    } else {
+                        // Aumentar la primera letra y reiniciar la segunda letra y los dígitos a "0"
+                        chars[firstIndex]++;
+                        chars[lastIndex] = 'A';
+                        for (int j = lastIndex + 1; j < chars.length; j++) {
+                            chars[j] = '0';
+                        }
+                    }
+                } else {
+                    // Si la primera letra no es válida, reiniciar toda la secuencia a "AA00"
+                    for (int j = 0; j < chars.length; j++) {
+                        chars[j] = (j < 2) ? 'A' : '0';
+                    }
+                }
+            } else {
+                chars[lastIndex]++;
+                // Establecer los dígitos a la derecha en "0"
+                for (int j = lastIndex + 1; j < chars.length; j++) {
+                    chars[j] = '0';
+                }
+            }
+        }
+
+        // Verificar si la última secuencia generada es "ZZ99"
+        if (lastSequence.equals("ZZ99")) {
+            secuencias.add("AAA0");
+        } else {
+            // Convertir la matriz de caracteres en una secuencia y agregarla al ArrayList
+            String newSequence = new String(chars);
+            secuencias.add(newSequence);
+        }
+    }
+
+    // Imprimir las secuencias generadas
+    for (String s : secuencias) {
+        System.out.println(s);
+    }
+}
 }
