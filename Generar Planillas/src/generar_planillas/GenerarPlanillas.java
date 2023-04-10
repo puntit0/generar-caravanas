@@ -24,7 +24,7 @@ import net.sf.jasperreports.view.JasperViewer;
 public class GenerarPlanillas {
 
     List<String> caravanas = new ArrayList<>();
-    List<String> nroCaravanas = new ArrayList<>();
+    ArrayList<String> secuencias = new ArrayList<>();
     int nroHoja = 1;
 
     public static void main(String[] args) {
@@ -34,8 +34,8 @@ public class GenerarPlanillas {
 
     public void generar() {
         ArrayList<Caravana> secuencia = new ArrayList<>();
-        for (int i = 0; i < nroCaravanas.size(); i++) {
-            Caravana numcaravana = new Caravana(nroCaravanas.get(i));
+        for (int i = 0; i < secuencias.size(); i++) {
+            Caravana numcaravana = new Caravana(secuencias.get(i));
 
             secuencia.add(numcaravana);
         }
@@ -45,7 +45,8 @@ public class GenerarPlanillas {
             JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/report1.jasper"));
 
             if (report != null) {
-                /*for (int i = 0; i < 3; i++) {
+                //IMPORTANTE probar funciones asincronas y await para generar los reportes al cerrar el anterior
+                for (int i = 0; i < 1; i++) {
                     JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(secuencia);
                     JasperPrint jprint = JasperFillManager.fillReport(report, null, ds);
 
@@ -55,7 +56,7 @@ public class GenerarPlanillas {
                     JasperViewer visualiza = new JasperViewer(jprint, false);
                     visualiza.setTitle("reporte caravanas");
                     visualiza.setVisible(true);
-                }*/
+                }
                 JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(secuencia);
                 JasperPrint jprint = JasperFillManager.fillReport(report, null, ds);
 
@@ -97,7 +98,7 @@ public class GenerarPlanillas {
                 Caravana = "" + letra1 + letra2 + String.format("%03d", numCaravana);
             }
 
-            nroCaravanas.add(Caravana);
+            secuencias.add(Caravana);
 
             numCaravana++;
 
@@ -134,14 +135,14 @@ public class GenerarPlanillas {
 
     public void prueba() {
         String inicaravanas = "RT00";
-        int cantidad = 1000;
-        //cargarCaravanas(inicaravanas, cantidad);
-        //generar();
+        int cantidad = 25;
         generarCa(inicaravanas,cantidad);
+        generar();
+        
     }
 
     public void generarCa(String desde, int cant) {
-    ArrayList<String> secuencias = new ArrayList<>();
+    //ArrayList<String> secuencias = new ArrayList<>();
     secuencias.add(desde);
 
     for (int i = 1; i < cant; i++) {
