@@ -5,7 +5,6 @@
 package generar_planillas;
 
 import entity.Caravana;
-import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.jasperreports.engine.JRException;
@@ -15,7 +14,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -23,9 +21,14 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class GenerarPlanillas {
 
-    List<String> caravanas = new ArrayList<>();
-    ArrayList<String> secuencias = new ArrayList<>();
+    private List<String> caravanas = new ArrayList<>();
+    private ArrayList<String> secuencias = new ArrayList<>();
     int nroHoja = 1;
+    private Object[][] abecedario;
+    private final int[] multiplos = {7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2};
+    private int caravanasPorPlanilla = 25;
+    private int caravanasEnPlanillaActual = 0;
+    private int nroPlanilla = 1;
 
     public static void main(String[] args) {
         GenerarPlanillas planillas = new GenerarPlanillas();
@@ -34,185 +37,234 @@ public class GenerarPlanillas {
 
     public void generar() {
         ArrayList<Caravana> secuencia = new ArrayList<>();
-        for (int i = 0; i < secuencias.size(); i++) {
-            Caravana numcaravana = new Caravana(secuencias.get(i));
-
+        for (int i = 0; i < caravanas.size(); i++) {
+            Caravana numcaravana = new Caravana(caravanas.get(i));
             secuencia.add(numcaravana);
+            caravanasEnPlanillaActual++;
+
+            if (caravanasEnPlanillaActual == caravanasPorPlanilla) {
+                generarPlanilla(secuencia);
+                secuencia.clear();
+                caravanasEnPlanillaActual = 0;
+                nroPlanilla++;
+            }
         }
 
-        try {
+        if (!secuencia.isEmpty()) {
+            generarPlanilla(secuencia);
+        }
+    }
 
+    private void generarPlanilla(ArrayList<Caravana> secuencia) {
+        try {
             JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/report1.jasper"));
 
             if (report != null) {
-                //IMPORTANTE probar funciones asincronas y await para generar los reportes al cerrar el anterior
-                for (int i = 0; i < 1; i++) {
+                String nombrePlanilla = "planilla" + nroPlanilla;
+                for (int i = 0; i < 3; i++) {
+                    String nombreArchivo = "C:/documentos/" + nombrePlanilla + "_" + getNombreRepeticion(i) + ".pdf";
                     JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(secuencia);
                     JasperPrint jprint = JasperFillManager.fillReport(report, null, ds);
 
-                    //JasperViewer view = new JasperViewer(jprint, false);
-                    //view.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                    //view.setVisible(true);
-                    JasperViewer visualiza = new JasperViewer(jprint, false);
-                    visualiza.setTitle("reporte caravanas");
-                    visualiza.setVisible(true);
+                    //JasperViewer visualiza = new JasperViewer(jprint, false);
+                    //visualiza.setTitle("reporte caravanas");
+                    //visualiza.setVisible(true);
+                    JasperExportManager.exportReportToPdfFile(jprint, nombreArchivo);
                 }
-                JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(secuencia);
-                JasperPrint jprint = JasperFillManager.fillReport(report, null, ds);
-
-                JasperViewer visualiza = new JasperViewer(jprint, false);
-                visualiza.setTitle("reporte caravanas");
-                visualiza.setVisible(true);
             }
-
         } catch (JRException ex) {
             System.out.println("hubo un error al intentar generar el reporte: " + ex.getMessage());
             ex.getMessage();
         }
-
     }
 
-    public void cargarCaravanas(String iniCaravana, int cantidad) {
-        char letra1;
-        char letra2;
-        int numCaravana;
-
-        /*verifica si el numero actual de la caravana es de 1 o 2 letras, segun 
-        corresponda descomponera y asiganara los valores a las variables*/
-        if (iniCaravana.length() < 5) {
-            letra1 = iniCaravana.charAt(0);
-            letra2 = ' ';
-            numCaravana = Integer.parseInt(iniCaravana.substring(1));
-        } else {
-            letra1 = iniCaravana.charAt(0);
-            letra2 = iniCaravana.charAt(1);
-            numCaravana = Integer.parseInt(iniCaravana.substring(2));
+    private String getNombreRepeticion(int repeticion) {
+        switch (repeticion) {
+            case 0:
+                return "original";
+            case 1:
+                return "duplicado";
+            case 2:
+                return "triplicado";
+            default:
+                return "";
         }
-
-        //forma el numero de caravana con datos generados
-        for (int c = 0; c < cantidad; c++) {
-            String Caravana;
-            if (letra2 == ' ') {
-                Caravana = "" + letra1 + String.format("%03d", numCaravana);
-            } else {
-                Caravana = "" + letra1 + letra2 + String.format("%03d", numCaravana);
-            }
-
-            secuencias.add(Caravana);
-
-            numCaravana++;
-
-            if (letra2 == ' ') {
-
-                if (numCaravana > 999) {
-                    numCaravana = 0;
-
-                    if (letra1 == 'Z') {
-                        letra1 = 'A';
-                        letra2 = 'A';
-                    } else {
-                        letra1++;
-                    }
-                }
-            } else {
-                if (numCaravana > 999) {
-                    numCaravana = 0;
-                    if (letra2 == 'Z') {
-                        letra2 = 'A';
-                        if (letra1 == 'Z') {
-                            letra1 = 'A';
-                        } else {
-                            letra1++;
-                        }
-                    } else {
-                        letra2++;
-                    }
-                }
-            }
-        }
-
     }
 
     public void prueba() {
-        String inicaravanas = "RT00";
-        int cantidad = 25;
-        generarCa(inicaravanas,cantidad);
+        String inicaravanas = "Z999";
+        String cuig = "PW209";
+        int cantidad = 50;
+        generarCa(inicaravanas, cantidad, cuig);
         generar();
-        
+        //digitoV(cuig);
+
     }
 
-    public void generarCa(String desde, int cant) {
-    //ArrayList<String> secuencias = new ArrayList<>();
-    secuencias.add(desde);
+    public void generarCa(String desde, int cant, String cuig) {
+        //ArrayList<String> secuencias = new ArrayList<>();
+        secuencias.add(desde);
 
-    for (int i = 1; i < cant; i++) {
-        // Obtener la última secuencia generada
-        String lastSequence = secuencias.get(secuencias.size() - 1);
+        for (int i = 1; i < cant; i++) {
+            // Obtener la última secuencia generada
+            String lastSequence = secuencias.get(secuencias.size() - 1);
 
-        // Convertir la última secuencia en una matriz de caracteres
-        char[] chars = lastSequence.toCharArray();
+            // Convertir la última secuencia en una matriz de caracteres
+            char[] chars = lastSequence.toCharArray();
 
-        // Incrementar el último dígito numérico
-        int lastIndex = chars.length - 1;
-        while (lastIndex >= 0 && Character.isDigit(chars[lastIndex])) {
-            if (chars[lastIndex] == '9') {
-                chars[lastIndex] = '0';
-                lastIndex--;
-            } else {
-                chars[lastIndex]++;
-                break;
+            // Incrementar el último dígito numérico
+            int lastIndex = chars.length - 1;
+            while (lastIndex >= 0 && Character.isDigit(chars[lastIndex])) {
+                if (chars[lastIndex] == '9') {
+                    chars[lastIndex] = '0';
+                    lastIndex--;
+                } else {
+                    chars[lastIndex]++;
+                    break;
+                }
             }
-        }
 
-        // Verificar si se necesita agregar una nueva letra a la izquierda
-        if (lastIndex >= 0 && Character.isLetter(chars[lastIndex])) {
-            char currentLetter = chars[lastIndex];
-            if (currentLetter == 'Z') {
-                // Agregar una nueva letra a la izquierda
-                int firstIndex = lastIndex - 1;
-                if (firstIndex >= 0 && Character.isLetter(chars[firstIndex])) {
-                    char firstLetter = chars[firstIndex];
-                    if (firstLetter == 'Z') {
-                        // Si la primera letra es 'Z', reiniciar toda la secuencia a "AA00"
+            // Verificar si se necesita agregar una nueva letra a la izquierda
+            if (lastIndex >= 0 && Character.isLetter(chars[lastIndex])) {
+                char currentLetter = chars[lastIndex];
+                if (currentLetter == 'Z') {
+                    // Agregar una nueva letra a la izquierda
+                    int firstIndex = lastIndex - 1;
+                    if (firstIndex >= 0 && Character.isLetter(chars[firstIndex])) {
+                        char firstLetter = chars[firstIndex];
+                        if (firstLetter == 'Z') {
+                            // Si la primera letra es 'Z', reiniciar toda la secuencia a "AA00"
+                            for (int j = 0; j < chars.length; j++) {
+                                chars[j] = (j < 2) ? 'A' : '0';
+                            }
+                        } else {
+                            // Aumentar la primera letra y reiniciar la segunda letra y los dígitos a "0"
+                            chars[firstIndex]++;
+                            chars[lastIndex] = 'A';
+                            for (int j = lastIndex + 1; j < chars.length; j++) {
+                                chars[j] = '0';
+                            }
+                        }
+                    } else {
+                        // Si la primera letra no es válida, reiniciar toda la secuencia a "AA00"
                         for (int j = 0; j < chars.length; j++) {
                             chars[j] = (j < 2) ? 'A' : '0';
                         }
-                    } else {
-                        // Aumentar la primera letra y reiniciar la segunda letra y los dígitos a "0"
-                        chars[firstIndex]++;
-                        chars[lastIndex] = 'A';
-                        for (int j = lastIndex + 1; j < chars.length; j++) {
-                            chars[j] = '0';
-                        }
                     }
                 } else {
-                    // Si la primera letra no es válida, reiniciar toda la secuencia a "AA00"
-                    for (int j = 0; j < chars.length; j++) {
-                        chars[j] = (j < 2) ? 'A' : '0';
+                    chars[lastIndex]++;
+                    // Establecer los dígitos a la derecha en "0"
+                    for (int j = lastIndex + 1; j < chars.length; j++) {
+                        chars[j] = '0';
                     }
                 }
+            }
+
+            // Verificar si la última secuencia generada es "ZZ99"
+            if (lastSequence.equals("ZZ99")) {
+                secuencias.add("AAA0");
             } else {
-                chars[lastIndex]++;
-                // Establecer los dígitos a la derecha en "0"
-                for (int j = lastIndex + 1; j < chars.length; j++) {
-                    chars[j] = '0';
-                }
+                // Convertir la matriz de caracteres en una secuencia y agregarla al ArrayList
+                String newSequence = new String(chars);
+                secuencias.add(newSequence);
             }
         }
 
-        // Verificar si la última secuencia generada es "ZZ99"
-        if (lastSequence.equals("ZZ99")) {
-            secuencias.add("AAA0");
-        } else {
-            // Convertir la matriz de caracteres en una secuencia y agregarla al ArrayList
-            String newSequence = new String(chars);
-            secuencias.add(newSequence);
+        // Imprimir las secuencias generadas
+        /*for (String s : secuencias) {
+            System.out.println(s);
+        }*/
+        digitoV(cuig);
+    }
+
+    private void digitoV(String cuig) {
+        String caravanaC = "";
+        for (String seq : secuencias) {
+            String Caravana = cuig + seq;
+            String numsSeq = "";
+            String digitoV = "";
+
+            int suma = 0;
+            int resto;
+
+            //A) Convertir las letras a números según la tabla
+            for (int i = 0; i < Caravana.length(); i++) {
+                char c = Caravana.charAt(i);
+                if (Character.isLetter(c)) {
+                    if (!(c < 'A' || c > 'Z')) {
+                        numsSeq += Equivalente(c);
+                    }
+                } else {
+                    numsSeq += c;
+                }
+            }
+            //B) Se multiplican los términos por su correspondiente número de la secuencia
+            //y se suman los resultados de estas multiplicaiones
+            for (int i = numsSeq.length() - 1; i >= 0; i--) {
+                int a = Character.getNumericValue(numsSeq.charAt(i));
+                suma += multiplos[i] * a;
+
+            }
+            //la suma se divide popr 11 y se obtiene el resto
+            resto = suma % 11;
+
+            /*E) Si el RESTO es cero, el dígito verificador es cero.
+            Si el RESTO es uno, el dígito verificador es uno.
+            Si el RESTO no es ni cero ni uno, el dígito verificador es 11 menos el resto*/
+            if (resto == 0 || resto == 1) {
+                digitoV = String.valueOf(resto);
+            } else {
+                digitoV = String.valueOf(11 - resto);
+            }
+
+            //construyo la caravana final
+            caravanaC = "" + cuig + "-" + seq + "-" + digitoV;
+            caravanas.add(caravanaC);
+        }
+
+        for (String s : caravanas) {
+            System.out.println(s);
         }
     }
 
-    // Imprimir las secuencias generadas
-    for (String s : secuencias) {
-        System.out.println(s);
+    private String Equivalente(char letra) {
+        String valor = "";
+
+        abecedario = new Object[][]{
+            {'A', 65},
+            {'B', 66},
+            {'C', 67},
+            {'D', 68},
+            {'E', 69},
+            {'F', 70},
+            {'G', 71},
+            {'H', 72},
+            {'I', 73},
+            {'J', 74},
+            {'K', 75},
+            {'L', 76},
+            {'M', 77},
+            {'N', 78},
+            {'O', 79},
+            {'P', 80},
+            {'Q', 81},
+            {'R', 82},
+            {'S', 83},
+            {'T', 84},
+            {'U', 85},
+            {'V', 86},
+            {'W', 87},
+            {'X', 88},
+            {'Y', 89},
+            {'Z', 90}
+        };
+
+        for (int i = 0; i < abecedario.length; i++) {
+            if (letra == (char) abecedario[i][0]) {
+                valor = String.valueOf(abecedario[i][1]);
+            }
+        }
+
+        return valor;
     }
-}
 }
