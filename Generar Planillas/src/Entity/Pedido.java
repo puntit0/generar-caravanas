@@ -10,11 +10,12 @@ package Entity;
  */
 public class Pedido {
     private String CUIG;
-    private String sobrecuig;
+    private String titular;
     private String establecimiento;
     private String RENSPA;
     private String CUIT;
     private int hoja;
+    private int cantidad;
     private String desde;
     private String hasta;
     private String impresor;
@@ -22,16 +23,16 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(String CUIG, String sobrecuig, String establecimiento, String RENSPA, String CUIT, int hoja, String desde, String hasta, String impresor) {
+    public Pedido(String CUIG, String titular, String establecimiento, String RENSPA, String CUIT, int hoja, int cantidad, String desde) {
         this.CUIG = CUIG;
-        this.sobrecuig = sobrecuig;
+        this.titular = titular;
         this.establecimiento = establecimiento;
         this.RENSPA = RENSPA;
         this.CUIT = CUIT;
         this.hoja = hoja;
+        this.cantidad = cantidad;
         this.desde = desde;
-        this.hasta = hasta;
-        this.impresor = impresor;
+    
     }
 
     public String getCUIG() {
@@ -42,12 +43,12 @@ public class Pedido {
         this.CUIG = CUIG;
     }
 
-    public String getSobrecuig() {
-        return sobrecuig;
+    public String getTitular() {
+        return titular;
     }
 
-    public void setSobrecuig(String sobrecuig) {
-        this.sobrecuig = sobrecuig;
+    public void setTitular(String titular) {
+        this.titular = titular;
     }
 
     public String getEstablecimiento() {
@@ -82,6 +83,14 @@ public class Pedido {
         this.hoja = hoja;
     }
 
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
     public String getDesde() {
         return desde;
     }
@@ -105,6 +114,7 @@ public class Pedido {
     public void setImpresor(String impresor) {
         this.impresor = impresor;
     }
+
     
     
 }

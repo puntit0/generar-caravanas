@@ -5,6 +5,7 @@
 package generar_planillas;
 
 import entity.Caravana;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.jasperreports.engine.JRException;
@@ -32,6 +33,7 @@ public class GenerarPlanillas {
 
     public static void main(String[] args) {
         GenerarPlanillas planillas = new GenerarPlanillas();
+        GenerarPlanillas.carpeta();
         planillas.prueba();
     }
 
@@ -266,5 +268,19 @@ public class GenerarPlanillas {
         }
 
         return valor;
+    }
+
+    private static void carpeta() {
+        String ruta = "C:/documentos";
+        File carpeta = new File(ruta);
+        if (carpeta.exists() && carpeta.isDirectory()) {
+            System.out.println("La carpeta existe");
+        } else {
+            if (carpeta.mkdir()) {
+                System.out.println("La carpeta ha sido creada");
+            } else {
+                System.out.println("No se ha podido crear la carpeta");
+            }
+        }
     }
 }
