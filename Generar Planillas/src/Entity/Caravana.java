@@ -6,9 +6,20 @@ package entity;
 
 public class Caravana {
     private String nrocaravana;
+    private String caravana;
 
-    public Caravana(String nrocaravana) {
+    public String getCaravana() {
+       return caravana;
+    }
+
+    public void setCaravana(String caravana) {
+        this.caravana = caravana;
+    }
+
+
+    public Caravana(String nrocaravana, String caravana) {
         this.nrocaravana = nrocaravana;
+        this.caravana = caravana;
     }
 
     public Caravana() {

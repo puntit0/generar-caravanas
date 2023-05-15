@@ -275,12 +275,13 @@ public class aplicacion extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(RENSPA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(nrohoja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CUIT))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(CUIT, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel6)
+                        .addComponent(nrohoja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(32, 32, 32)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -343,7 +344,7 @@ public class aplicacion extends javax.swing.JFrame {
     }//GEN-LAST:event_mesanoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+        
         try {
             String cuig = this.CUIG.getText().toUpperCase();
             String Titular = this.titular.getText().toUpperCase();
@@ -353,11 +354,13 @@ public class aplicacion extends javax.swing.JFrame {
             int nroHoja = Integer.parseInt(this.nrohoja.getText().toUpperCase());
             String desdecaravana = this.desdeCaravana.getText().toUpperCase();
             int Cant = Integer.parseInt(this.cantidad.getText().toUpperCase());
-            Pedido pedido = new Pedido(cuig, Titular, desdecaravana, renspa, cuit, nroHoja, Cant, est);
-            GenerarPlanillas planillas = new GenerarPlanillas(); 
             
+            Pedido pedido = new Pedido(cuig, Titular, est, renspa, cuit, nroHoja, Cant, desdecaravana);
+            
+            GenerarPlanillas planillas = new GenerarPlanillas(); 
+            planillas.prueba();
 
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             System.out.println("hubo un error al intentar obtener datos: " + e.getMessage());
             e.getMessage();
         }

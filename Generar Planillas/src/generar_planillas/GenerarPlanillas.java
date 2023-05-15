@@ -7,7 +7,9 @@ package generar_planillas;
 import entity.Caravana;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -40,7 +42,7 @@ public class GenerarPlanillas {
     public void generar() {
         ArrayList<Caravana> secuencia = new ArrayList<>();
         for (int i = 0; i < caravanas.size(); i++) {
-            Caravana numcaravana = new Caravana(caravanas.get(i));
+            Caravana numcaravana = new Caravana(caravanas.get(i), secuencias.get(i));
             secuencia.add(numcaravana);
             caravanasEnPlanillaActual++;
 
@@ -96,7 +98,7 @@ public class GenerarPlanillas {
     public void prueba() {
         String inicaravanas = "Z999";
         String cuig = "PW209";
-        int cantidad = 50;
+        int cantidad = 25;
         generarCa(inicaravanas, cantidad, cuig);
         generar();
         //digitoV(cuig);

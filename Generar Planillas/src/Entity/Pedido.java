@@ -19,6 +19,7 @@ public class Pedido {
     private String desde;
     private String hasta;
     private String impresor;
+    private String copia;
 
     public Pedido() {
     }
@@ -33,6 +34,14 @@ public class Pedido {
         this.cantidad = cantidad;
         this.desde = desde;
     
+    }
+
+    public String getCopia() {
+        return copia;
+    }
+
+    public void setCopia(String copia) {
+        this.copia = copia;
     }
 
     public String getCUIG() {
