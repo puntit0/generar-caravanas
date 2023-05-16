@@ -17,9 +17,9 @@ public class Pedido {
     private int hoja;
     private int cantidad;
     private String desde;
-    private String hasta;
-    private String impresor;
-    private String copia;
+    private String hasta;//notuse
+    private String impresor;//notuse
+    private String copia; //notuse
 
     public Pedido() {
     }

@@ -4,10 +4,11 @@
  */
 package generar_planillas;
 
+import Entity.Pedido;
+import GUI.aplicacion;
 import entity.Caravana;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.sf.jasperreports.engine.JRException;
@@ -26,7 +27,6 @@ public class GenerarPlanillas {
 
     private List<String> caravanas = new ArrayList<>();
     private ArrayList<String> secuencias = new ArrayList<>();
-    int nroHoja = 1;
     private Object[][] abecedario;
     private final int[] multiplos = {7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2};
     private int caravanasPorPlanilla = 25;
@@ -36,18 +36,35 @@ public class GenerarPlanillas {
     public static void main(String[] args) {
         GenerarPlanillas planillas = new GenerarPlanillas();
         GenerarPlanillas.carpeta();
-        planillas.prueba();
+        
+        aplicacion interfaz = new aplicacion();
+        interfaz.setTitle("generar planillas");
+        interfaz.setLocationRelativeTo(null);
+        interfaz.setVisible(true);
+        
+        //planillas.prueba();
     }
 
-    public void generar() {
+    public void generar(Pedido pedido) {
         ArrayList<Caravana> secuencia = new ArrayList<>();
+        Caravana firstCara = new Caravana();
+        nroPlanilla = pedido.getHoja();
         for (int i = 0; i < caravanas.size(); i++) {
             Caravana numcaravana = new Caravana(caravanas.get(i), secuencias.get(i));
+            if(secuencia.isEmpty()){
+                numcaravana.setTitular(pedido.getTitular());
+                numcaravana.setCuit(pedido.getCUIT());
+                numcaravana.setEstablecimiento(pedido.getEstablecimiento());
+                numcaravana.setRenspa(pedido.getRENSPA());
+                numcaravana.setCuig(pedido.getCUIG());
+                numcaravana.setnHoja(nroPlanilla);
+                firstCara = numcaravana;
+            }
             secuencia.add(numcaravana);
             caravanasEnPlanillaActual++;
 
             if (caravanasEnPlanillaActual == caravanasPorPlanilla) {
-                generarPlanilla(secuencia);
+                generarPlanilla(secuencia, firstCara);
                 secuencia.clear();
                 caravanasEnPlanillaActual = 0;
                 nroPlanilla++;
@@ -55,11 +72,11 @@ public class GenerarPlanillas {
         }
 
         if (!secuencia.isEmpty()) {
-            generarPlanilla(secuencia);
+            generarPlanilla(secuencia, firstCara);
         }
     }
 
-    private void generarPlanilla(ArrayList<Caravana> secuencia) {
+    private void generarPlanilla(ArrayList<Caravana> secuencia, Caravana cara) {
         try {
             JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/report1.jasper"));
 
@@ -67,7 +84,13 @@ public class GenerarPlanillas {
                 String nombrePlanilla = "planilla" + nroPlanilla;
                 for (int i = 0; i < 3; i++) {
                     String nombreArchivo = "C:/documentos/" + nombrePlanilla + "_" + getNombreRepeticion(i) + ".pdf";
+                    
+                    cara.setTipocopia(getNombreRepeticion(i));
+                    secuencia.set(0, cara);
+                    
                     JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(secuencia);
+
+
                     JasperPrint jprint = JasperFillManager.fillReport(report, null, ds);
 
                     //JasperViewer visualiza = new JasperViewer(jprint, false);
@@ -95,13 +118,12 @@ public class GenerarPlanillas {
         }
     }
 
-    public void prueba() {
-        String inicaravanas = "Z999";
-        String cuig = "PW209";
-        int cantidad = 25;
-        generarCa(inicaravanas, cantidad, cuig);
-        generar();
-        //digitoV(cuig);
+    public void prueba(Pedido pedido) {
+        //String inicaravanas = "Z999";
+        //String cuig = "PW209";
+        //int cantidad = 75;
+        generarCa(pedido.getDesde(), pedido.getCantidad(), pedido.getCUIG());
+        generar(pedido);
 
     }
 
