@@ -108,11 +108,11 @@ public class GenerarPlanillas {
     private String getNombreRepeticion(int repeticion) {
         switch (repeticion) {
             case 0:
-                return "original";
+                return "ORIGINAL";
             case 1:
-                return "duplicado";
+                return "DUPLICADO";
             case 2:
-                return "triplicado";
+                return "TRIPLICADO";
             default:
                 return "";
         }
