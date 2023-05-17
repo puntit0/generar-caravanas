@@ -66,23 +66,29 @@
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="25" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="1" width="100" height="20" uuid="4cda52a3-6254-466c-9538-96fc38ddd81e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{nrocaravana}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="134" y="1" width="100" height="20" uuid="59252f37-7c58-4d3d-9a2a-56eb13ad16f6"/>
+				<reportElement x="134" y="0" width="100" height="20" uuid="59252f37-7c58-4d3d-9a2a-56eb13ad16f6"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{caravana}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
-	<pageFooter>
-		<band height="54" splitType="Stretch">
+	<columnFooter>
+		<band height="50">
 			<textField>
-				<reportElement x="448" y="21" width="65" height="20" uuid="8fed9c6e-f9f7-4c0e-87d1-4d63c504adf6"/>
+				<reportElement x="470" y="18" width="65" height="20" uuid="8fed9c6e-f9f7-4c0e-87d1-4d63c504adf6"/>
 				<textFieldExpression><![CDATA[$F{tipocopia}]]></textFieldExpression>
 			</textField>
 		</band>
-	</pageFooter>
+	</columnFooter>
 </jasperReport>

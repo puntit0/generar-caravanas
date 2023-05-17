@@ -36,35 +36,34 @@ public class GenerarPlanillas {
     public static void main(String[] args) {
         GenerarPlanillas planillas = new GenerarPlanillas();
         GenerarPlanillas.carpeta();
-        
+
         aplicacion interfaz = new aplicacion();
         interfaz.setTitle("generar planillas");
         interfaz.setLocationRelativeTo(null);
         interfaz.setVisible(true);
-        
+
         //planillas.prueba();
     }
 
     public void generar(Pedido pedido) {
         ArrayList<Caravana> secuencia = new ArrayList<>();
-        Caravana firstCara = new Caravana();
         nroPlanilla = pedido.getHoja();
         for (int i = 0; i < caravanas.size(); i++) {
             Caravana numcaravana = new Caravana(caravanas.get(i), secuencias.get(i));
-            if(secuencia.isEmpty()){
+            if (secuencia.isEmpty()) {
                 numcaravana.setTitular(pedido.getTitular());
                 numcaravana.setCuit(pedido.getCUIT());
                 numcaravana.setEstablecimiento(pedido.getEstablecimiento());
                 numcaravana.setRenspa(pedido.getRENSPA());
                 numcaravana.setCuig(pedido.getCUIG());
                 numcaravana.setnHoja(nroPlanilla);
-                firstCara = numcaravana;
+
             }
             secuencia.add(numcaravana);
             caravanasEnPlanillaActual++;
 
             if (caravanasEnPlanillaActual == caravanasPorPlanilla) {
-                generarPlanilla(secuencia, firstCara);
+                generarPlanilla(secuencia);
                 secuencia.clear();
                 caravanasEnPlanillaActual = 0;
                 nroPlanilla++;
@@ -72,24 +71,27 @@ public class GenerarPlanillas {
         }
 
         if (!secuencia.isEmpty()) {
-            generarPlanilla(secuencia, firstCara);
+            generarPlanilla(secuencia);
         }
     }
 
-    private void generarPlanilla(ArrayList<Caravana> secuencia, Caravana cara) {
+    private void generarPlanilla(ArrayList<Caravana> secuencia) {
         try {
             JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/report1.jasper"));
 
             if (report != null) {
-                String nombrePlanilla = "planilla" + nroPlanilla;
+                Caravana cara = secuencia.get(0);
+                System.out.println("copia or: " + cara.getTipocopia());
+                String nombrePlanilla = cara.getCuig() + "_" + "planilla" + nroPlanilla;
                 for (int i = 0; i < 3; i++) {
                     String nombreArchivo = "C:/documentos/" + nombrePlanilla + "_" + getNombreRepeticion(i) + ".pdf";
-                    
-                    cara.setTipocopia(getNombreRepeticion(i));
-                    secuencia.set(0, cara);
-                    
-                    JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(secuencia);
 
+                    cara.setTipocopia(getNombreRepeticion(i));
+                    secuencia.set(24, cara);
+                    Caravana caras = secuencia.get(24);
+                    System.out.println("copia seq: " + caras.getTipocopia());
+
+                    JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(secuencia);
 
                     JasperPrint jprint = JasperFillManager.fillReport(report, null, ds);
 
