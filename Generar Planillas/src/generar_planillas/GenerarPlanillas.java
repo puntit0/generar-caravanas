@@ -6,7 +6,7 @@ package generar_planillas;
 
 import Entity.Pedido;
 import GUI.aplicacion;
-import entity.Caravana;
+import Entity.Caravana;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class GenerarPlanillas {
     private ArrayList<String> secuencias = new ArrayList<>();
     private Object[][] abecedario;
     private final int[] multiplos = {7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2};
-    private int caravanasPorPlanilla = 25;
+    private final int caravanasPorPlanilla = 25;
     private int caravanasEnPlanillaActual = 0;
     private int nroPlanilla = 1;
 
@@ -62,7 +62,7 @@ public class GenerarPlanillas {
             secuencia.add(numcaravana);
             caravanasEnPlanillaActual++;
 
-            if (caravanasEnPlanillaActual == caravanasPorPlanilla) {
+            if (secuencia.size() == caravanasPorPlanilla) {
                 generarPlanilla(secuencia);
                 secuencia.clear();
                 caravanasEnPlanillaActual = 0;
@@ -76,20 +76,20 @@ public class GenerarPlanillas {
     }
 
     private void generarPlanilla(ArrayList<Caravana> secuencia) {
+        for(Caravana seq : secuencia){System.out.println("numcaravana dentro de geenerar: "+ seq.getCaravana());}
         try {
             JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/report1.jasper"));
 
             if (report != null) {
                 Caravana cara = secuencia.get(0);
-                System.out.println("copia or: " + cara.getTipocopia());
                 String nombrePlanilla = cara.getCuig() + "_" + "planilla" + nroPlanilla;
                 for (int i = 0; i < 3; i++) {
                     String nombreArchivo = "C:/documentos/" + nombrePlanilla + "_" + getNombreRepeticion(i) + ".pdf";
 
-                    cara.setTipocopia(getNombreRepeticion(i));
-                    secuencia.set(24, cara);
                     Caravana caras = secuencia.get(24);
-                    System.out.println("copia seq: " + caras.getTipocopia());
+                    caras.setTipocopia(getNombreRepeticion(i));
+                    secuencia.set(24, caras);
+                    
 
                     JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(secuencia);
 

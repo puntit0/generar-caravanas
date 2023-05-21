@@ -366,6 +366,23 @@ public class aplicacion extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "La cantidad debe ser múltiplo de 25.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if (cuig.length() != 5) {
+                JOptionPane.showMessageDialog(this, "asignar el CUIG en formato correcto.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (est.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "asignar un establecimiento.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (renspa.length() != 17) {
+                JOptionPane.showMessageDialog(this, "asignar el RENSPA en formato correcto.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (cuit.length() != 13) {
+                JOptionPane.showMessageDialog(this, "asignar el CUIT en formato correcto.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
 
             Pedido pedido = new Pedido(cuig, Titular, est, renspa, cuit, nroHoja, Cant, desdecaravana);
 
@@ -379,7 +396,7 @@ public class aplicacion extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        System.exit(1);
+        System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

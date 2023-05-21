@@ -17,9 +17,9 @@ public class Pedido {
     private int hoja;
     private int cantidad;
     private String desde;
-    private String hasta;//notuse
-    private String impresor;//notuse
-    private String copia; //notuse
+    //private String hasta;//notuse
+    //private String impresor;//notuse
+    private String copia; 
 
     public Pedido() {
     }
@@ -108,21 +108,21 @@ public class Pedido {
         this.desde = desde;
     }
 
-    public String getHasta() {
-        return hasta;
-    }
+    //public String getHasta() {
+     //   return hasta;
+    //}
 
-    public void setHasta(String hasta) {
-        this.hasta = hasta;
-    }
+    //public void setHasta(String hasta) {
+     //   this.hasta = hasta;
+    ///}
 
-    public String getImpresor() {
-        return impresor;
-    }
+    //public String getImpresor() {
+    //    return impresor;
+    //}
 
-    public void setImpresor(String impresor) {
-        this.impresor = impresor;
-    }
+    //public void setImpresor(String impresor) {
+    //    this.impresor = impresor;
+    //}
 
     
     
