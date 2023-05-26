@@ -29,8 +29,6 @@ public class GenerarPlanillas {
     private ArrayList<String> secuencias = new ArrayList<>();
     private Object[][] abecedario;
     private final int[] multiplos = {7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2};
-    private final int caravanasPorPlanilla = 25;
-    private int caravanasEnPlanillaActual = 0;
     private int nroPlanilla = 1;
 
     public static void main(String[] args) {
@@ -38,9 +36,10 @@ public class GenerarPlanillas {
         GenerarPlanillas.carpeta();
 
         aplicacion interfaz = new aplicacion();
-        interfaz.setTitle("generar planillas");
+        interfaz.setTitle("generar planillas V0.7");
         interfaz.setLocationRelativeTo(null);
         interfaz.setVisible(true);
+        interfaz.setResizable(false);
 
         //planillas.prueba();
     }
@@ -50,25 +49,26 @@ public class GenerarPlanillas {
         nroPlanilla = pedido.getHoja();
         for (int i = 0; i < caravanas.size(); i++) {
             Caravana numcaravana = new Caravana(caravanas.get(i), secuencias.get(i));
-            if (secuencia.isEmpty()) {
-                numcaravana.setTitular(pedido.getTitular());
-                numcaravana.setCuit(pedido.getCUIT());
-                numcaravana.setEstablecimiento(pedido.getEstablecimiento());
-                numcaravana.setRenspa(pedido.getRENSPA());
-                numcaravana.setCuig(pedido.getCUIG());
-                numcaravana.setnHoja(nroPlanilla);
-
-            }
+            
             secuencia.add(numcaravana);
-            caravanasEnPlanillaActual++;
-
-            if (secuencia.size() == caravanasPorPlanilla) {
-                generarPlanilla(secuencia);
-                secuencia.clear();
-                caravanasEnPlanillaActual = 0;
-                nroPlanilla++;
-            }
         }
+
+        for (int i = 0; i < caravanas.size(); i += 25) {
+            Caravana numcaravana = secuencia.get(i);
+
+            numcaravana.setTitular(pedido.getTitular());
+            numcaravana.setCuit(pedido.getCUIT());
+            numcaravana.setEstablecimiento(pedido.getEstablecimiento());
+            numcaravana.setRenspa(pedido.getRENSPA());
+            numcaravana.setCuig(pedido.getCUIG());
+            numcaravana.setnHoja(nroPlanilla);
+
+            secuencia.set(i, numcaravana);
+
+            nroPlanilla++;
+        }
+
+        generarPlanilla(secuencia);
 
         if (!secuencia.isEmpty()) {
             generarPlanilla(secuencia);
@@ -76,20 +76,21 @@ public class GenerarPlanillas {
     }
 
     private void generarPlanilla(ArrayList<Caravana> secuencia) {
-        for(Caravana seq : secuencia){System.out.println("numcaravana dentro de geenerar: "+ seq.getCaravana());}
         try {
             JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/report1.jasper"));
 
             if (report != null) {
                 Caravana cara = secuencia.get(0);
-                String nombrePlanilla = cara.getCuig() + "_" + "planilla" + nroPlanilla;
+                String nombrePlanilla = cara.getCuig() + "_" + "planilla";
                 for (int i = 0; i < 3; i++) {
-                    String nombreArchivo = "C:/documentos/" + nombrePlanilla + "_" + getNombreRepeticion(i) + ".pdf";
+                    String repeticion = getNombreRepeticion(i);
+                    String nombreArchivo = "C:/documentos/" + nombrePlanilla + "_" + repeticion + ".pdf";
 
-                    Caravana caras = secuencia.get(24);
-                    caras.setTipocopia(getNombreRepeticion(i));
-                    secuencia.set(24, caras);
-                    
+                    for (int a = 24; a < secuencia.size(); a += 25) {
+                        Caravana caras = secuencia.get(a);
+                        caras.setTipocopia(repeticion);
+                        secuencia.set(a, caras);
+                    }
 
                     JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(secuencia);
 
@@ -124,6 +125,7 @@ public class GenerarPlanillas {
         //String inicaravanas = "Z999";
         //String cuig = "PW209";
         //int cantidad = 75;
+        //bueno queda asi el nombre de la funcion
         generarCa(pedido.getDesde(), pedido.getCantidad(), pedido.getCUIG());
         generar(pedido);
 
@@ -202,7 +204,13 @@ public class GenerarPlanillas {
         /*for (String s : secuencias) {
             System.out.println(s);
         }*/
+        
+        
         digitoV(cuig);
+    }
+    
+    public String hastacaravana(){
+        return secuencias.get(secuencias.size()-1);
     }
 
     private void digitoV(String cuig) {

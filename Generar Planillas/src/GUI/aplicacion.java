@@ -60,6 +60,7 @@ public class aplicacion extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         jLabel1.setText("CUIG");
@@ -371,8 +372,7 @@ public class aplicacion extends javax.swing.JFrame {
                 return;
             }
             if (est.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "asignar un establecimiento.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+                est = " ";
             }
             if (renspa.length() != 17) {
                 JOptionPane.showMessageDialog(this, "asignar el RENSPA en formato correcto.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -383,11 +383,17 @@ public class aplicacion extends javax.swing.JFrame {
                 return;
             }
             
+            if (Titular.isEmpty()){
+                Titular = " ";
+            }
+            
 
             Pedido pedido = new Pedido(cuig, Titular, est, renspa, cuit, nroHoja, Cant, desdecaravana);
 
             GenerarPlanillas planillas = new GenerarPlanillas();
             planillas.prueba(pedido);
+            
+            this.hastaCaravana.setText(planillas.hastacaravana());
 
         } catch (NumberFormatException e) {
             System.out.println("hubo un error al intentar obtener datos: " + e.getMessage());
@@ -395,6 +401,10 @@ public class aplicacion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    public void setHasta(String lastcara){
+        this.hastaCaravana.setText(lastcara);
+    }
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
