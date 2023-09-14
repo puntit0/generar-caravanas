@@ -1,4 +1,4 @@
-en este programa debemos poder generar los numeros de las caravanas para bobinos que seran impresos en una planilla preimpresa.
+en este programa debemos poder generar los numeros de las caravanas para bovinos que seran impresos en una planilla preimpresa.
  para esto debemos solicitar por pantalla y utilizar el numero de cuig del productor y la numeracion actual de sus caravanas. 
 mediante estos datos calcular el digito verificador regulado por la rsolucion 32. en composicion de estos tres datos debemos generar
 la cantidad de numeros de caravana que haya solicitado el cliente
